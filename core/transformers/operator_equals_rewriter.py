@@ -5,34 +5,43 @@ from core.rewriter import RewriterCommand
 
 class OperatorEqualsTransformer(NodeTransformer):
 
-    def __init__(self):
-        super().__init__()
-
     def visit_Assign(self, node):
         NodeTransformer.generic_visit(self, node)
         if isinstance(node.value, BinOp):
-            left = node.targets[0]
-            binOp = node.value
-            op = binOp.op
-            if left.id == binOp.left.id:
-                right = binOp.right
-            else:
-                right = binOp.left
-            if isinstance(op, Add):
-                node = AugAssign(target=left, op=Add(), value=right)
-            elif isinstance(op, Sub):
-                node = AugAssign(target=left, op=Sub(), value=right)
-            elif isinstance(op, Mult):
-                node = AugAssign(target=left, op=Mult(), value=right)
-            elif isinstance(op, Div):
-                node = AugAssign(target=left, op=Div(), value=right)
-            elif isinstance(op, Mod):
-                node = AugAssign(target=left, op=Mod(), value=right)
-            elif isinstance(op, Pow):
-                node = AugAssign(target=left, op=Pow(), value=right)
-            elif isinstance(op, FloorDiv):
-                node = AugAssign(target=left, op=FloorDiv(), value=right)
-
+            if isinstance(node.targets[0], Name):
+                left = node.targets[0]
+                binOp = node.value
+                op = binOp.op
+                if isinstance(binOp.left, Name):
+                    if left.id == binOp.left.id and isinstance(op, Add):
+                        return AugAssign(target=left, op=Add(), value=binOp.right)
+                    elif left.id == binOp.left.id and isinstance(op, Sub):
+                        return AugAssign(target=left, op=Sub(), value=binOp.right)
+                    elif left.id == binOp.left.id and isinstance(op, Mult):
+                        return AugAssign(target=left, op=Mult(), value=binOp.right)
+                    elif left.id == binOp.left.id and isinstance(op, Div):
+                        return AugAssign(target=left, op=Div(), value=binOp.right)
+                    elif left.id == binOp.left.id and isinstance(op, Mod):
+                        return AugAssign(target=left, op=Mod(), value=binOp.right)
+                    elif left.id == binOp.left.id and isinstance(op, Pow):
+                        return AugAssign(target=left, op=Pow(), value=binOp.right)
+                    elif left.id == binOp.left.id and isinstance(op, FloorDiv):
+                        return AugAssign(target=left, op=FloorDiv(), value=binOp.right)
+                elif isinstance(binOp.right, Name):
+                    if left.id == binOp.right.id and isinstance(op, Add):
+                        return AugAssign(target=left, op=Add(), value=binOp.left)
+                    elif left.id == binOp.right.id and isinstance(op, Sub):
+                        return AugAssign(target=left, op=Sub(), value=binOp.left)
+                    elif left.id == binOp.right.id and isinstance(op, Mult):
+                        return AugAssign(target=left, op=Mult(), value=binOp.left)
+                    elif left.id == binOp.right.id and isinstance(op, Div):
+                        return AugAssign(target=left, op=Div(), value=binOp.left)
+                    elif left.id == binOp.right.id and isinstance(op, Mod):
+                        return AugAssign(target=left, op=Mod(), value=binOp.left)
+                    elif left.id == binOp.right.id and isinstance(op, Pow):
+                        return AugAssign(target=left, op=Pow(), value=binOp.left)
+                    elif left.id == binOp.right.id and isinstance(op, FloorDiv):
+                        return AugAssign(target=left, op=FloorDiv(), value=binOp.left)
         return node
 
 class OperatorEqualsCommand(RewriterCommand):

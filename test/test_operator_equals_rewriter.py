@@ -7,9 +7,9 @@ from core.transformers import *
 
 class TestOperatorEqualsRewriter(LinterTest):
     def test_plus_eq(self):
-        result = rewrite(OperatorEqualsCommand, "a = a + 7")
+        result = rewrite(OperatorEqualsCommand, "a = c + 7")
         
-        self.assertAST(result, "a += 7")
+        self.assertAST(result, "a = c + 7")
 
     def test_minus_eq(self):
         result = rewrite(OperatorEqualsCommand,
