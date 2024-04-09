@@ -8,6 +8,8 @@ class SimplifiedIfTransformer(NodeTransformer):
 
     def __init__(self):
         super().__init__()
+        
+    
 
 
 class SimplifiedIfCommand(RewriterCommand):
